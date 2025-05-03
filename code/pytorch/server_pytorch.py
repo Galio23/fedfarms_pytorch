@@ -36,7 +36,7 @@ torch.manual_seed(seed)
 
 soil_properties_columns = config["soil_properties"]
 metrics_dir = config["metrics_dir"]
-
+os.makedirs(config["metrics_dir"], exist_ok=True)
 # --------------------------------------------------------------------------
 # Utility Metric Functions
 # --------------------------------------------------------------------------
@@ -220,8 +220,16 @@ class SaveModelStrategy(fl.server.strategy.FedAvg):
                 round_metrics = wgt_average_metrics(metrics_list_round)
             else:
                 round_metrics = simple_mean_metrics(metrics_list_round)
-        print(f"[Round {server_round}] Aggregated client metrics: {round_metrics}")
+        round_metrics["round"] = server_round
 
+        all_metrics_path = os.path.join(config["metrics_dir"], "all_rounds_client_metrics.csv")
+        df_round = pd.DataFrame([round_metrics])
+        if os.path.exists(all_metrics_path):
+            df_round.to_csv(all_metrics_path, mode="a", header=False, index=False)
+        else:
+            df_round.to_csv(all_metrics_path, mode="w", header=True, index=False)
+
+        print(f"[Round {server_round}] Aggregated client metrics: {round_metrics}")
         return parameters_aggregated, round_metrics
 
 

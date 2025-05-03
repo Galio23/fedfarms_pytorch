@@ -27,8 +27,8 @@ config = {
     # Federated Learning / Flower Server Configuration
     # =======================================================
     "strategy" : "FedAvg",        # Options: "FedAvg", "WgtAvg"
-    "server_address": "localhost:8000", #"15.204.230.95:8080",
-    "num_rounds": 10,           # Total federated training rounds
+    "server_address": "15.204.230.95:8080", #"15.204.230.95:8080",
+    "num_rounds": 200,           # Total federated training rounds
 
     # =======================================================
     # Model Configuration
@@ -47,7 +47,7 @@ config = {
     },
 
     "seed": 42, 
-    "num_clients" : 2,                 
+    "num_clients" : 50,                 
     "input_shape":  10,            
     "output_shape": 2,          
     "val_ratio": 0.3,            
