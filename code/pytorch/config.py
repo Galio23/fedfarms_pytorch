@@ -21,7 +21,7 @@ config = {
     "client_data": "data/farms_sentinel.csv",
     "scaler_path": "code/models/scaler_y_2cols.pkl",
     # Server Data paths (if needed)
-    "server_data": "data/test_global.csv",
+    "server_data": "data/server_dataset.csv",
 
     # =======================================================
     # Federated Learning / Flower Server Configuration
