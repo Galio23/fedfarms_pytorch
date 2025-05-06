@@ -21,13 +21,13 @@ config = {
     "client_data": "data/farms_sentinel.csv",
     "scaler_path": "code/models/scaler_y_2cols.pkl",
     # Server Data paths (if needed)
-    "server_data": "data/server_dataset.csv",
+    "server_data": "data/combined_splits/Farms_server_test.csv", #"data/test_global.csv",
 
     # =======================================================
     # Federated Learning / Flower Server Configuration
     # =======================================================
     "strategy" : "FedAvg",        # Options: "FedAvg", "WgtAvg"
-    "server_address": "15.204.230.95:8080", #"15.204.230.95:8080",
+    "server_address": "15.204.230.95:8080",
     "num_rounds": 200,           # Total federated training rounds
 
     # =======================================================

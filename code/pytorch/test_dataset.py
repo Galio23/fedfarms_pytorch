@@ -10,5 +10,6 @@ def main():
         print(f"  Features shape (X): {X_client.shape}")
         print(f"  Targets shape (y): {y_client.shape}\n")
 
+
 if __name__ == "__main__":
     main()
