@@ -21,14 +21,14 @@ config = {
     "client_data": "data/farms_sentinel.csv",
     "scaler_path": "code/models/scaler_y_2cols.pkl",
     # Server Data paths (if needed)
-    "server_data": "data/combined_splits/Farms_server_test.csv", #"data/test_global.csv",
+    "server_data":  "data/test_global.csv", #"data/combined_splits/Farms_server_test.csv",
 
     # =======================================================
     # Federated Learning / Flower Server Configuration
     # =======================================================
     "strategy" : "FedAvg",        # Options: "FedAvg", "WgtAvg"
-    "server_address": "15.204.230.95:8080",
-    "num_rounds": 200,           # Total federated training rounds
+    "server_address": "15.204.230.95:8080", #"localhost:8000", #"15.204.230.95:8080",
+    "num_rounds": 100,           # Total federated training rounds
 
     # =======================================================
     # Model Configuration
@@ -42,7 +42,7 @@ config = {
         "learning_rate": 0.001,
         "momentum": 0.1,          # For SGD with momentum
         "batch_size": 8,
-        "epochs": 10,            # Local epochs per round
+        "epochs": 100,            # Local epochs per round
         "early_stop_patience": 10 # Patience for early stopping
     },
 
@@ -53,6 +53,6 @@ config = {
     "val_ratio": 0.3,            
 
     # Directories for saving model weights, metrics, etc.
-    "save_weights_dir": "outputs/weights_server",
-    "metrics_dir": "outputs/metrics_server"
+    "save_weights_dir": "outputs/weights_server_testan",
+    "metrics_dir": "outputs/metrics_server_testan"
 }

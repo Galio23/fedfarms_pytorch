@@ -1,1 +1,17 @@
 code/pytorch/__pycache__/
+.ipynb_checkpoints/
+Evaluations/
+code/pytorch/.ipynb_checkpoints/farms_RFs-checkpoint.ipynb
+code/pytorch/farms_RFs.ipynb
+code/pytorch/model_inference.py
+code/pytorch/split_datasets.py
+data/
+outputs/
+outputs_testan/
+outputs_testan_nopretrain/
+round_digits.ipynb
+trigger_pytorch.sh
+trigger_pytorch_v02.sh
+code/pytorch/metrics_visualization.py
+code/pytorch/metrics_farms_general_model.py
+code/pytorch/model_pytorch.py

@@ -205,10 +205,13 @@ class FlowerClient(fl.client.NumPyClient):
         
         train_loss = train(self.model, self.optimizer, self.criterion, train_loader, val_loader, epochs, early_stop_patience, self.device)
         print(f"Client {self.cid} - Training completed. Final validation loss: {train_loss:.4f}")
+        
+        best_flag = False
         if train_loss < self.best_global_val_loss:
+            best_flag = True
             self.best_global_val_loss = train_loss
             self.best_global_state    = copy.deepcopy(self.model.state_dict())
-            out_model = f"outputs/clients_models/client{self.cid}_best_overall.pth"
+            out_model = f"outputs_testan_nopretrain/clients_models_new/client{self.cid}_best_overall.pth"
             os.makedirs(os.path.dirname(out_model), exist_ok=True)
             torch.save(self.best_global_state, out_model)
             print(f"Client {self.cid} → saved new overall best (loss {train_loss:.4f})")
@@ -246,12 +249,18 @@ class FlowerClient(fl.client.NumPyClient):
         metrics_dict["client_id"] = self.cid
         metrics_dict["round"] = self.local_round
         METRICS_TRAIN.append(metrics_dict)
-        out_path = f'outputs/clients_metrics_train/client{self.cid}_train_metrics.csv'
+        out_path = f'outputs_testan_nopretrain/clients_metrics_train_new/client{self.cid}_train_metrics.csv'
         os.makedirs(os.path.dirname(out_path), exist_ok=True)
         pd.DataFrame(METRICS_TRAIN).to_csv(out_path, index=False)
         print(f"Client {self.cid} - Local training metrics: {metrics_dict}")
         self.local_round += 1
         
+        if best_flag:
+            df = pd.DataFrame({'y_pred_0': y_pred[:, 0], 'y_true_0': y_true[:, 0], 'y_pred_1':  y_pred[:, 1], 'y_true_1': y_true[:, 1]})
+            out_path = f'outputs_testan_nopretrain/clients_predictions_new/client{self.cid}_predictions.csv'
+            os.makedirs(os.path.dirname(out_path), exist_ok=True)
+            df.to_csv(out_path, index=False)
+
         return get_model_weights(self.model), len(self.X_train), metrics_dict
 
     def evaluate(self, parameters, config):
@@ -302,7 +311,7 @@ class FlowerClient(fl.client.NumPyClient):
         metrics_dict_eval["client_id"] = self.cid
         metrics_dict_eval["round"] = self.local_round
         METRICS_EVAL.append(metrics_dict_eval)
-        out_path = f'outputs/clients_metrics_eval/client{self.cid}_eval_nomodel.csv'
+        out_path = f'outputs_testan_nopretrain/clients_metrics_eval_new/client{self.cid}_eval_nomodel.csv'
         os.makedirs(os.path.dirname(out_path), exist_ok=True)
         pd.DataFrame(METRICS_EVAL).to_csv(out_path, index=False)
         print(f"Client {self.cid} - Local eval metrics: {metrics_dict_eval}")
@@ -331,7 +340,7 @@ def main():
     output_shape = y_train.shape[1]      
     model = create_model(input_shape=input_shape, output_shape=output_shape)
 
-    device = "cpu" #torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     client = FlowerClient(model, X_train, y_train, X_val, y_val, cid=cid, device=device)
 
     # Start the client and connect to the server
